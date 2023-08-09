@@ -19,6 +19,7 @@ env:
   FORCE_COLOR: "1"  # Make tool output pretty.
   PIP_DISABLE_PIP_VERSION_CHECK: "1"
   PIP_PROGRESS_BAR: "off"
+  LOGLEVEL: "DEBUG"
 
 jobs:
   build:
@@ -41,10 +42,6 @@ jobs:
           python -m pip install --upgrade pip setuptools wheel
           # python -m pip install git+https://github.com/nfdi4cat/voc4cat-tool.git@v0.5.1
           python -m pip install git+https://github.com/nfdi4cat/voc4cat-tool.git@main
-
-      - name: Set environment variables.
-        run: |
-          echo "LOGLEVEL=$DEBUG" >> $GITHUB_ENV
 
       - name: Run voc4cat (publish joined & split SKOS/turtle)
         run: |

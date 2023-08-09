@@ -73,7 +73,7 @@ jobs:
         run: |
           voc4cat --version
           # check inbox file names
-          voc4cat check --ci-pre --config _main_branch/idranges.toml --logfile outbox/voc4cat.log inbox-excel-vocabs/ _main_branch/vocabularies
+          voc4cat check --config _main_branch/idranges.toml --logfile outbox/voc4cat.log --ci-pre inbox-excel-vocabs/ _main_branch/vocabularies
           # check xlsx file(s). If the check fails, write annotated file to outbox.
           voc4cat check --config _main_branch/idranges.toml --logfile outbox/voc4cat.log --outdir outbox inbox-excel-vocabs/
 
@@ -87,7 +87,7 @@ jobs:
           # check all ttl file(s) in outbox
           voc4cat check --config _main_branch/idranges.toml --logfile outbox/voc4cat.log outbox/
           # check if vocabulary changes are allowed
-          voc4cat check --ci-post --config _main_branch/idranges.toml --logfile outbox/voc4cat.log _main_branch/vocabularies outbox/
+          voc4cat check --config _main_branch/idranges.toml --logfile outbox/voc4cat.log --ci-post _main_branch/vocabularies outbox/
 
       - name: Run voc4cat (build HTML documentation)
         run: |

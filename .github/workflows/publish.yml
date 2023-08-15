@@ -87,7 +87,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./publish/latest
           keep_files: true
-          destination_dir: ${{VOC4CAT_VERSION}}
+          destination_dir: ${{ github.ref_name }}
 
       - name: Store publish dir (=pages) as artifact
         # This step is not required and may be removed.

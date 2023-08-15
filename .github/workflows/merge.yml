@@ -52,6 +52,7 @@ jobs:
       - name: Run voc4cat (publish joined & split SKOS/turtle)
         run: |
           voc4cat --version
+          mkdir -p publish/dev/
           cp -r vocabularies/ publish/dev/
           # Build joined turtle
           voc4cat transform --logfile publish/dev/voc4cat.log --join publish/dev/

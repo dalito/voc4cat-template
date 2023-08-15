@@ -1,4 +1,4 @@
-# This action runs when a release is created via tagging or via GitHub UI.
+# This action runs on merges to main.
 #
 # Workflow steps:
 # - create joined vocabulary file in addition to split version
@@ -9,17 +9,16 @@
 name: Build & Publish
 on:
   push:
-    tags:
-      - v[0-9]+.[0-9]+.[0-9]+
-  release:
-    types: [published]
+    branches:
+      - main
+  workflow_dispatch:
 
 env:
   FORCE_COLOR: "1"  # Make tool output pretty.
   PIP_DISABLE_PIP_VERSION_CHECK: "1"
   PIP_PROGRESS_BAR: "off"
   LOGLEVEL: "DEBUG"
-  VOC4CAT_VERSION: ${{github.ref_name}}  # use release tag as version
+  VOC4CAT_VERSION: ${{github.sha}}  # set commit hash as version for "dev"
 
 jobs:
   build:
@@ -53,40 +52,30 @@ jobs:
       - name: Run voc4cat (publish joined & split SKOS/turtle)
         run: |
           voc4cat --version
-          cp -r vocabularies/ publish/latest/
+          cp -r vocabularies/ publish/dev/
           # Build joined turtle
-          voc4cat transform --logfile publish/latest/voc4cat.log --join publish/latest/
+          voc4cat transform --logfile publish/dev/voc4cat.log --join publish/dev/
 
       - name: Run voc4cat (build HTML documentation)
         run: |
-          voc4cat docs --force --logfile publish/latest/voc4cat.log publish/latest/
+          voc4cat docs --force --logfile publish/dev/voc4cat.log publish/dev/
 
       - name: Run voc4cat (build current Excel file)
         run: |
-          voc4cat convert --logfile publish/latest/voc4cat.log --template templates/voc4cat_template_043.xlsx publish/latest/
-          ls -l publish/latest/ || echo "publish/latest directory does not exist."
+          voc4cat convert --logfile publish/dev/voc4cat.log --template templates/voc4cat_template_043.xlsx publish/dev/
+          ls -l publish/dev/ || echo "publish/dev directory does not exist."
 
-      - name: Deploy documentation & SKOS/turtle & xlsx as latest
+      - name: Deploy documentation & SKOS/turtle & xlsx
         # Pin third party action (v3.9.3)
         uses: peaceiris/actions-gh-pages@373f7f263a76c20808c831209c920827a82a2847
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
         with:
           publish_branch: gh-pages
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./publish/latest
-          destination_dir: latest
-          # force_orphan: true  # https://github.com/peaceiris/actions-gh-pages/issues/455
-
-      - name: Deploy documentation & SKOS/turtle & xlsx as tagged version
-        # Pin third party action (v3.9.3)
-        uses: peaceiris/actions-gh-pages@373f7f263a76c20808c831209c920827a82a2847
-        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
-        with:
-          publish_branch: gh-pages
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./publish/latest
+          publish_dir: ./publish/dev
+          destination_dir: dev
           keep_files: true
-          destination_dir: ${{VOC4CAT_VERSION}}
+          # force_orphan: true  # https://github.com/peaceiris/actions-gh-pages/issues/455
 
       - name: Store publish dir (=pages) as artifact
         # This step is not required and may be removed.
@@ -94,7 +83,7 @@ jobs:
         if: ${{ always() }}
         uses: actions/upload-artifact@v3
         with:
-          name: voc4cat-pages-latest-content
+          name: voc4cat-pages-dev-content
           path: publish/
 
 # Lit:

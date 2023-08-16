@@ -1,6 +1,7 @@
 # This action runs when a release is created via tagging or via GitHub UI.
 #
 # Workflow steps:
+# - checkout gh-pages for updating
 # - create joined vocabulary file in addition to split version
 # - create excel-file from turtle
 # - build docs
@@ -23,7 +24,7 @@ env:
 
 jobs:
   build:
-    name: Development build of vocabulary & documentation
+    name: Release vocabulary & documentation
     permissions:
       # Required for peaceiris/actions-gh-pages below
       contents: write
@@ -31,6 +32,13 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v3
+
+      - name: Checkout gh-pages branch to dir publish/
+        uses: actions/checkout@v3
+        with:
+          ref: gh-pages
+          path: publish
+          fetch-depth: 1
 
       - uses: actions/setup-python@v4
         with:
@@ -42,9 +50,8 @@ jobs:
           python -m pip install --upgrade pip setuptools wheel
 
           # install tagged version
-          # python -m pip install git+https://github.com/nfdi4cat/voc4cat-tool.git@v0.6.2
+          python -m pip install git+https://github.com/nfdi4cat/voc4cat-tool.git@v0.7.0
           # python -m pip install git+https://github.com/nfdi4cat/voc4cat-tool.git@main
-          python -m pip install git+https://github.com/nfdi4cat/voc4cat-tool.git@issue147
 
       - name: Set dynamic environment variables.
         run: |
@@ -65,27 +72,23 @@ jobs:
       - name: Run voc4cat (build current Excel file)
         run: |
           voc4cat convert --logfile publish/latest/voc4cat.log --template templates/voc4cat_template_043.xlsx publish/latest/
-          ls -l publish/latest/ || echo "publish/latest directory does not exist."
 
-      - name: Deploy documentation & SKOS/turtle & xlsx as latest
+      - name: Copy release to release-name directory
+        run: |
+          mkdir -p publish/${{ github.ref_name }}
+          cp -r publish/latest/. publish/${{ github.ref_name }}/
+
+      - name: Deploy updated gh-pages content
+        # This replaces all prior content in gh-pages branch. But we have
+        # checked out the gh-pages branch above so that we keep all prior
+        # content and just re-publish the extended version.
         # Pin third party action (v3.9.3)
         uses: peaceiris/actions-gh-pages@373f7f263a76c20808c831209c920827a82a2847
         with:
           publish_branch: gh-pages
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./publish/latest
-          destination_dir: latest
-          # force_orphan: true  # https://github.com/peaceiris/actions-gh-pages/issues/455
-
-      - name: Deploy documentation & SKOS/turtle & xlsx as tagged version
-        # Pin third party action (v3.9.3)
-        uses: peaceiris/actions-gh-pages@373f7f263a76c20808c831209c920827a82a2847
-        with:
-          publish_branch: gh-pages
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./publish/latest
-          keep_files: true
-          destination_dir: ${{ github.ref_name }}
+          publish_dir: ./publish
+          force_orphan: true
 
       - name: Store publish dir (=pages) as artifact
         # This step is not required and may be removed.
@@ -93,7 +96,7 @@ jobs:
         if: ${{ always() }}
         uses: actions/upload-artifact@v3
         with:
-          name: voc4cat-pages-latest-content
+          name: voc4cat-pages-release-${{ github.ref_name }}
           path: publish/
 
 # Lit:

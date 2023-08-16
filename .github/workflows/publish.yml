@@ -23,7 +23,7 @@ env:
 
 jobs:
   build:
-    name: Build vocabulary & documentation
+    name: Development build of vocabulary & documentation
     permissions:
       # Required for peaceiris/actions-gh-pages below
       contents: write

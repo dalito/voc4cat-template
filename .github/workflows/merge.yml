@@ -19,7 +19,6 @@ env:
   PIP_DISABLE_PIP_VERSION_CHECK: "1"
   PIP_PROGRESS_BAR: "off"
   LOGLEVEL: "DEBUG"
-  #VOC4CAT_VERSION: "v_${{github.sha:0:10}}"   # set first 10 chars of commit hash as version for "dev"
 
 jobs:
   build:
@@ -62,6 +61,8 @@ jobs:
         run: |
           voc4cat --version
           mkdir -p publish/dev/
+          # delete files xlsx and ttl produced in previous workflow runs
+          find publish/dev/ -type f \( -name "*.xlsx" -o -name "*.ttl" \) -delete
           cp -r vocabularies/. publish/dev/
           # Build joined turtle
           voc4cat transform --logfile publish/dev/voc4cat.log --join publish/dev/

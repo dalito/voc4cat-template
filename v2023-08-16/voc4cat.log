@@ -1,0 +1,32 @@
+2023-08-16 06:23:29|voc4cat.cli         |INFO    |Executing cmd: voc4cat transform --logfile publish/latest/voc4cat.log --join publish/latest/
+2023-08-16 06:23:29|voc4cat.cli         |DEBUG   |Processing common options.
+2023-08-16 06:23:29|voc4cat.transform   |DEBUG   |Transform subcommand started!
+2023-08-16 06:23:29|voc4cat.transform   |DEBUG   |Processing rdf files in "publish/latest/vocab_example"
+2023-08-16 06:23:29|voc4cat.transform   |INFO    |-> joined vocabulary into: publish/latest/vocab_example.ttl
+2023-08-16 06:23:29|voc4cat.cli         |INFO    |Executing cmd: voc4cat docs --force --logfile publish/latest/voc4cat.log publish/latest/
+2023-08-16 06:23:29|voc4cat.cli         |DEBUG   |Processing common options.
+2023-08-16 06:23:29|voc4cat.docs        |DEBUG   |Docs subcommand started!
+2023-08-16 06:23:29|voc4cat.docs        |DEBUG   |Processing "publish/latest/vocab_example.ttl"
+2023-08-16 06:23:29|pylode.common       |DEBUG   |Application dir: /opt/hostedtoolcache/Python/3.11.4/x64/lib/python3.11/site-packages/pylode
+2023-08-16 06:23:29|voc4cat.docs        |INFO    |-> built pyLODE documentation for publish/latest/vocab_example.ttl
+2023-08-16 06:23:30|voc4cat.cli         |INFO    |Executing cmd: voc4cat convert --logfile publish/latest/voc4cat.log --template templates/voc4cat_template_043.xlsx publish/latest/
+2023-08-16 06:23:30|voc4cat.cli         |DEBUG   |Processing common options.
+2023-08-16 06:23:30|voc4cat.convert     |DEBUG   |Convert subcommand started!
+2023-08-16 06:23:30|voc4cat.convert     |DEBUG   |Processing "publish/latest/vocab_example.ttl"
+2023-08-16 06:23:30|voc4cat.convert     |INFO    |-> successfully converted to publish/latest/vocab_example.xlsx
+2023-08-17 07:03:22|voc4cat.cli         |INFO    |Executing cmd: voc4cat transform --logfile publish/latest/voc4cat.log --join publish/latest/
+2023-08-17 07:03:22|voc4cat.cli         |DEBUG   |Processing common options.
+2023-08-17 07:03:22|voc4cat.transform   |DEBUG   |Transform subcommand started!
+2023-08-17 07:03:22|voc4cat.transform   |DEBUG   |Processing rdf files in "publish/latest/vocab_example"
+2023-08-17 07:03:22|voc4cat.transform   |INFO    |-> joined vocabulary into: publish/latest/vocab_example.ttl
+2023-08-17 07:03:23|voc4cat.cli         |INFO    |Executing cmd: voc4cat docs --force --logfile publish/latest/voc4cat.log publish/latest/
+2023-08-17 07:03:23|voc4cat.cli         |DEBUG   |Processing common options.
+2023-08-17 07:03:23|voc4cat.docs        |DEBUG   |Docs subcommand started!
+2023-08-17 07:03:23|voc4cat.docs        |DEBUG   |Processing "publish/latest/vocab_example.ttl"
+2023-08-17 07:03:23|pylode.common       |DEBUG   |Application dir: /opt/hostedtoolcache/Python/3.11.4/x64/lib/python3.11/site-packages/pylode
+2023-08-17 07:03:23|voc4cat.docs        |INFO    |-> built pyLODE documentation for publish/latest/vocab_example.ttl
+2023-08-17 07:03:23|voc4cat.cli         |INFO    |Executing cmd: voc4cat convert --logfile publish/latest/voc4cat.log --template templates/voc4cat_template_043.xlsx publish/latest/
+2023-08-17 07:03:23|voc4cat.cli         |DEBUG   |Processing common options.
+2023-08-17 07:03:23|voc4cat.convert     |DEBUG   |Convert subcommand started!
+2023-08-17 07:03:23|voc4cat.convert     |DEBUG   |Processing "publish/latest/vocab_example.ttl"
+2023-08-17 07:03:24|voc4cat.convert     |INFO    |-> successfully converted to publish/latest/vocab_example.xlsx
